@@ -152,7 +152,15 @@ class SliderWithUnit(IAccessible):
 
 ### Include as Git submodule
 
-[TODO]
+If you include this module into your add-on, the best way is probably to add it as a Git submodule, under the appropriate path. E.g.:
+
+```
+>git submodule add https://github.com/ABuffEr/labelAutofinderCore addon/appModules/labelAutofinderCore
+```
+
+Regardless of path, please mantain the name of last folder as "labelAutofinderCore", so to guarantee a "opportunity check" by other add-ons (especially global plugins).
+
+Moreover, I'll be very happy if you cite this work in your readme!
 
 ### When text disappears
 
