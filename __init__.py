@@ -12,7 +12,7 @@ from .search import SearchConfig, SearchDirections
 from .utils import debugLog, measureTime, refreshTextContent
 
 
-__version__ = "2025-04-09"
+__version__ = "2025-04-12"
 
 def getLabel(obj=None, config=None, overview=False):
 	"""main method to call, returns label of passed object, if found, None otherwise.
