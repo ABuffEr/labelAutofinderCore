@@ -156,7 +156,13 @@ If you include this module into your add-on, the best way is probably to add it 
 
 ```
 >git submodule add https://github.com/ABuffEr/labelAutofinderCore addon/appModules/labelAutofinderCore
+>git submodule init
+>git submodule update
+>git commit -m "Added labelAutofinderCore as submodule"
+>git push --all
 ```
+
+If you have problems running `git submodule update` the next times, try to see [here.](https://stackoverflow.com/questions/3336995/git-will-not-init-sync-update-new-submodules)
 
 Regardless of path, please mantain the name of last folder as "labelAutofinderCore", so to guarantee a "opportunity check" by other add-ons (especially global plugins).
 
