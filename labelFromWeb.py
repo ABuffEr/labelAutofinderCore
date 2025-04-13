@@ -66,17 +66,3 @@ def getAllStaticChildren(parent):
 		child = getNVDAObjectFromPoint(point.x, point.y)
 		if child and child.role == roles.STATICTEXT and child.name:
 			yield child
-
-"""
-	from comInterfaces import IAccessible2Lib as IA2
-	attrs = [
-		{"IAccessible::role": [oleacc.ROLE_SYSTEM_TEXT]},
-		{"IAccessible2::attribute_tag": ["label"]},
-		{"IAccessible::role": [IA2.IA2_ROLE_SECTION, oleacc.ROLE_SYSTEM_TEXT]},
-	]
-	nodeIterator = webParent._iterNodesByAttribs(attrs, pos=info)
-	for node in nodeIterator:
-		nodeObj = node.obj
-		if nodeObj.name:
-			yield nodeObj
-"""

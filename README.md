@@ -70,6 +70,8 @@ class AppModule(appModuleHandler.AppModule):
 		nextHandler()
 ```
 
+Note that, with default LEFT_TOP or multiple directions, the module always returns one label, that is, the label with minimum distance from passed object between ones found in the specified directions.
+
 ## Script for testing
 
 To better understand and explore your situation, it may be useful to use a script like this:
@@ -189,6 +191,8 @@ class AppModule(appModuleHandler.AppModule):
 			refreshTextContent(obj)
 		nextHandler()
 ```
+
+For the reason and an alternative method (but less reliable in my experience), see [this Emil Hesmyr's message.](https://nvda-addons.groups.io/g/nvda-addons/message/25970)
 
 ### Combobox and editable combobox
 
