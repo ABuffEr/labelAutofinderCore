@@ -7,12 +7,13 @@ import api
 
 from .labelFromObj import getLabelFromObj, getAllStaticHandles
 from .labelFromText import getLabelFromText
+from .labelFromUWPObj import getLabelFromUWPObj
 from .labelFromWeb import getLabelFromWeb
 from .search import SearchConfig, SearchDirections
 from .utils import debugLog, measureTime, refreshTextContent
 
 
-__version__ = "2025-04-12"
+__version__ = "2025-05-08"
 
 def getLabel(obj=None, config=None, overview=False):
 	"""main method to call, returns label of passed object, if found, None otherwise.
@@ -37,18 +38,22 @@ def getLabel(obj=None, config=None, overview=False):
 	if strategy == "auto":
 		# determine real strategy
 		treeInterceptor = config.obj.treeInterceptor
-		if treeInterceptor:
+		if config.obj.windowClassName == "Windows.UI.Core.CoreWindow":
+			strategy = "uwp"
+		elif treeInterceptor:
 			strategy = "web"
 		else:
 			fg = api.getForegroundObject()
 			strategy = "obj" if getAllStaticHandles(fg.windowHandle) else "text"
 	debugLog("Established strategy: %s"%strategy)
-	if strategy == "web":
-		res = getLabelFromWeb(obj, config)
-	elif strategy == "obj":
+	if strategy == "obj":
 		res = getLabelFromObj(obj, config)
 	elif strategy == "text":
 		res = getLabelFromText(obj, config)
+	elif strategy == "uwp":
+		res = getLabelFromUWPObj(obj, config)
+	elif strategy == "web":
+		res = getLabelFromWeb(obj, config)
 	debugLog("End labelling for direction %s"%repr(config.directions))
 	if not res:
 		return

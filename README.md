@@ -7,7 +7,7 @@ The module implements various techniques to associate to a chosen object the lab
 Supported scenarios are:
 
 * web pages, e.g. the fields in a form not correctly labelled;
-* programs with labels as object (retrievable with object review), sometimes associated to wrong GUI items;
+* programs - including UWP apps - with labels as object (retrievable with object review), sometimes associated to wrong GUI items;
 * programs with labels as text (retrievable with screen review), where association with objects could be completely missed.
 
 TLDR? Jump to "Script for testing" section.
@@ -40,7 +40,7 @@ You can provide following parameters to SearchConfig:
 
 * obj: object to label (if you want to pass just the config to getLabel);\
 Default: focus object (or navigator object for web) retrieved via api; due to event processing or object building, passing the object (via getLabel or config) is strongly recomended;
-* strategy: it can be "auto", "obj", "text" or "web" (but specify it should be a minimum impact on performance, it's mainly for internal behaviors);\
+* strategy: it can be "auto", "obj", "text", "uwp" or "web" (but specify it should be a minimum impact on performance, it's mainly for internal behaviors);\
 Default: "auto";
 * labelContainer: the object containing the label (text and web strategy only);\
 Default: None (algorithm goes up in ancestor tree, in bottom-top order);
@@ -49,9 +49,9 @@ Default: foreground object (or None for web, that practically means the first ob
 * directions: a SearchDirections class constants (LEFT, TOP, RIGHT, BOTTOM, HORIZONTAL, VERTICAL, LEFT_TOP, ALL), or any tuple defined like `(*SearchDirections.LEFT, *SearchDirections.TOP, *SearchDirections.BOTTOM)`;\
 Default: SearchDirections.LEFT_TOP;
 * maxHorizontalDistance: max horizontal distance between left/right point of object to label and relative point of the label;\
-Default: 100 for obj and web, 8 for text strategy; if set to sys.maxsize, then it'll be the width of foreground object for obj and web, and 10000 for text strategy;
+Default: 150 for uwp, 100 for obj and web, 8 for text strategy; if set to sys.maxsize, then it'll be 10000 for text strategy, the width of foreground object otherwise;
 * maxVerticalDistance: max vertical distance between top/bottom point of object to label and relative point of the label;\
-Default: 100 for obj and web, None for text strategy (it forces to use the character height); if set to sys.maxsize, then it'll be the height of foreground object for obj and web, and 10000 for text strategy.
+Default: 150 for uwp, 100 for obj and web, None for text strategy (it forces to use the character height); if set to sys.maxsize, then it'll be 10000 for text strategy, the height of foreground object otherwise.
 
 In addition, you can also derive a config by a previous config, building as `SearchConfig(oldConfig=prevConfig)`.
 
@@ -164,7 +164,7 @@ If you include this module into your add-on, the best way is probably to add it 
 >git push --all
 ```
 
-If you have problems running `git submodule update` the next times, try to see [here.](https://stackoverflow.com/questions/3336995/git-will-not-init-sync-update-new-submodules)
+If you have problems running `git submodule update` the next times, try to append "--remote" option, or see [here.](https://stackoverflow.com/questions/3336995/git-will-not-init-sync-update-new-submodules)
 
 Regardless of path, please mantain the name of last folder as "labelAutofinderCore", so to guarantee a "opportunity check" by other add-ons (especially global plugins).
 

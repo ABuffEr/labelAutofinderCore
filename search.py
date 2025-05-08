@@ -34,6 +34,7 @@ class SearchConfig:
 		# auto (default): determined by getLabel (according to presence of static objs, see below);
 		# obj: based to static objs with the label as name (verify with object review);
 		# text: based to text retrieval from parent obj containing labels as simple text (verify with screen review);
+		# uwp: based to UIA TextBlock objs with label as name in UWP applications (verify with object review);
 		# web: based to treeInterceptor presence (very similar to obj, but into web pages)
 		"strategy",
 		# (text and web strategy) obj that contains the label
@@ -75,7 +76,7 @@ class SearchConfig:
 	@property
 	def strategy(self):
 		val = self.config.get("strategy", None)
-		if val in ("auto", "obj", "text", "web"):
+		if val in ("auto", "obj", "text", "uwp", "web"):
 			return val
 		return "auto"
 
@@ -94,7 +95,12 @@ class SearchConfig:
 			return val
 		if self.strategy == "web":
 			return None
-		return api.getForegroundObject()
+		fg = api.getForegroundObject()
+		if self.strategy == "uwp":
+			for child in fg.children:
+				if child.windowClassName == "Windows.UI.Core.CoreWindow":
+					return child
+		return fg
 
 	@property
 	def directions(self):
@@ -108,7 +114,7 @@ class SearchConfig:
 	def maxHorizontalDistance(self):
 		val = self.config.get("maxHorizontalDistance", None)
 		if isinstance(val, int):
-			if val == sys.maxsize and self.strategy in ("obj", "text", "web"):
+			if val == sys.maxsize and self.strategy in ("obj", "text", "uwp", "web"):
 				fg = api.getForegroundObject()
 				return fg.location.width if self.strategy != "text" else 10000
 			return val
@@ -117,6 +123,8 @@ class SearchConfig:
 			return sys.maxsize
 		elif self.strategy in ("obj", "web"):
 			return 100
+		elif self.strategy == "uwp":
+			return 150
 		elif self.strategy == "text":
 			from .labelFromText import RestrictedDMTI
 			return RestrictedDMTI.minHorizontalWhitespace
@@ -125,7 +133,7 @@ class SearchConfig:
 	def maxVerticalDistance(self):
 		val = self.config.get("maxHorizontalDistance", None)
 		if isinstance(val, int):
-			if val == sys.maxsize and self.strategy in ("obj", "text", "web"):
+			if val == sys.maxsize and self.strategy in ("obj", "text", "uwp", "web"):
 				fg = api.getForegroundObject()
 				return fg.location.height if self.strategy != "text" else 10000
 			return val
@@ -134,5 +142,7 @@ class SearchConfig:
 			return sys.maxsize
 		elif self.strategy in ("obj", "web"):
 			return 100
+		elif self.strategy == "uwp":
+			return 150
 		elif self.strategy == "text":
 			return None
